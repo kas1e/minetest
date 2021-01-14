@@ -31,6 +31,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "settings.h" // For g_settings
 #endif
 
+#ifdef __amigaos4__
+#include <proto/dos.h>
+#endif
+
 namespace fs
 {
 
@@ -287,6 +291,47 @@ bool IsDirDelimiter(char c)
 	return c == '/';
 }
 
+#ifdef __amigaos4__
+
+// Delete() on AmigaDOS return 0 if fail,  but DeleteFile() on win32 return 0 if success, so we change it accordingly
+
+bool RecursiveDelete(const std::string &path)
+{
+
+	infostream << "Recursively deleting \"" << path << "\"" << std::endl;
+	if (!IsDir(path)) {
+		infostream << "RecursiveDelete: Deleting file  " << path << std::endl;
+		if (IDOS->Delete(path.c_str())==0) {
+			errorstream << "RecursiveDelete: Failed to delete file "
+					<< path << std::endl;
+			return false;
+		}
+		return true;
+	}
+	infostream << "RecursiveDelete: Deleting content of directory " << path << std::endl;
+	
+	std::vector<DirListNode> content = GetDirListing(path);
+	
+	for (const DirListNode &n: content) {
+		std::string fullpath = path + DIR_DELIM + n.name;
+		if (!RecursiveDelete(fullpath)) {
+			errorstream << "RecursiveDelete: Failed to recurse to "
+					<< fullpath << std::endl;
+			return false;
+		}
+	}
+	infostream << "RecursiveDelete: Deleting directory " << path << std::endl;
+	if (IDOS->Delete(path.c_str())==0) {
+		errorstream << "Failed to recursively delete directory "
+				<< path << std::endl;
+		return false;
+	}
+	
+	return true;
+}
+
+#else
+
 bool RecursiveDelete(const std::string &path)
 {
 	/*
@@ -336,6 +381,7 @@ bool RecursiveDelete(const std::string &path)
 		return (child_status == 0);
 	}
 }
+#endif
 
 bool DeleteSingleFileOrEmptyDirectory(const std::string &path)
 {
