@@ -41,6 +41,17 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "client/renderingengine.h"
 #include "network/networkprotocol.h"
 
+#ifdef __amigaos4__
+// function to replace X amount of bytes in the buffer on Y amount of byte
+std::string ReplaceAll(std::string str, const std::string& from, const std::string& to) {
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
+    }
+    return str;
+}
+#endif
 
 /******************************************************************************/
 std::string ModApiMainMenu::getTextData(lua_State *L, std::string name)
@@ -165,6 +176,16 @@ int ModApiMainMenu::l_set_background(lua_State *L)
 	if (!lua_isnone(L, 4)) {
 		minsize = lua_tonumber(L, 4);
 	}
+
+#ifdef __amigaos4__
+
+	// fix "//" in the paths which falsely constructed by textures.lua script when loading menu elements
+	// When compiling without -lunix (to use AmigaDOS native paths), then "//" things will be handled wrong.
+	// So find out if we had "//" in the path and replace it with one "/"
+
+	texturename = ReplaceAll(texturename, std::string("//"), std::string("/"));
+
+#endif
 
 	if (backgroundlevel == "background") {
 		retval |= engine->setTexture(TEX_LAYER_BACKGROUND, texturename,

@@ -107,7 +107,9 @@ RenderingEngine::RenderingEngine(IEventReceiver *receiver)
 		DIR_DELIM + "Shaders" + DIR_DELIM).c_str();
 	// clang-format on
 #endif
-
+	#ifdef __amigaos4__
+	params.WindowResizable=true;
+	#endif
 	m_device = createDeviceEx(params);
 	driver = m_device->getVideoDriver();
 
@@ -130,7 +132,9 @@ v2u32 RenderingEngine::getWindowSize() const
 
 void RenderingEngine::setResizable(bool resize)
 {
+	#ifndef __amigaos4__
 	m_device->setResizable(resize);
+	#endif
 }
 
 bool RenderingEngine::print_video_modes()
