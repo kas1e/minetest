@@ -73,7 +73,7 @@ MapgenV7::MapgenV7(int mapgenid, MapgenV7Params *params, EmergeManager *emerge)
 
 	// This is to avoid a divide-by-zero.
 	// Parameter will be saved to map_meta.txt in limited form.
-	params->float_mount_height = std::fmax(params->float_mount_height, 1.0f);
+	params->float_mount_height = fmax(params->float_mount_height, 1.0f);
 	float_mount_height   = params->float_mount_height;
 
 	// 2D noise
@@ -253,7 +253,7 @@ int MapgenV7::getSpawnLevelAtPoint(v2s16 p)
 	// 'offset's.
 	// Raising the maximum spawn level above 'water_level + 16' is necessary
 	// for when terrain 'offset's are set much higher than water_level.
-	s16 max_spawn_y = std::fmax(std::fmax(noise_terrain_alt->np.offset,
+	s16 max_spawn_y = fmax(fmax(noise_terrain_alt->np.offset,
 			noise_terrain_base->np.offset),
 			water_level + 16);
 	// Base terrain calculation
@@ -425,7 +425,7 @@ float MapgenV7::baseTerrainLevelFromMap(int index)
 bool MapgenV7::getMountainTerrainAtPoint(s16 x, s16 y, s16 z)
 {
 	float mnt_h_n =
-		std::fmax(NoisePerlin2D(&noise_mount_height->np, x, z, seed), 1.0f);
+		fmax(NoisePerlin2D(&noise_mount_height->np, x, z, seed), 1.0f);
 	float density_gradient = -((float)(y - mount_zero_level) / mnt_h_n);
 	float mnt_n = NoisePerlin3D(&noise_mountain->np, x, y, z, seed);
 
@@ -435,7 +435,7 @@ bool MapgenV7::getMountainTerrainAtPoint(s16 x, s16 y, s16 z)
 
 bool MapgenV7::getMountainTerrainFromMap(int idx_xyz, int idx_xz, s16 y)
 {
-	float mounthn = std::fmax(noise_mount_height->result[idx_xz], 1.0f);
+	float mounthn = fmax(noise_mount_height->result[idx_xz], 1.0f);
 	float density_gradient = -((float)(y - mount_zero_level) / mounthn);
 	float mountn = noise_mountain->result[idx_xyz];
 
@@ -468,7 +468,7 @@ void MapgenV7::floatBaseExtentFromMap(s16 *float_base_min, s16 *float_base_max,
 	float n_base = noise_floatland_base->result[idx_xz];
 	if (n_base > 0.0f) {
 		float n_base_height =
-				std::fmax(noise_float_base_height->result[idx_xz], 1.0f);
+				fmax(noise_float_base_height->result[idx_xz], 1.0f);
 		float amp = n_base * n_base_height;
 		float ridge = n_base_height / 3.0f;
 		base_min = floatland_level - amp / 1.5f;
@@ -604,7 +604,7 @@ void MapgenV7::generateRidgeTerrain()
 			float height_mod = (altitude + 17.0f) / 2.5f;
 			float width_mod = width - std::fabs(uwatern);
 			float nridge = noise_ridge->result[index3d] *
-				std::fmax(altitude, 0.0f) / 7.0f;
+				fmax(altitude, 0.0f) / 7.0f;
 			if (nridge + width_mod * height_mod < 0.6f)
 				continue;
 

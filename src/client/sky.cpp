@@ -742,11 +742,11 @@ void Sky::update(float time_of_day, float time_brightness,
 			if (time_brightness < 0.7f)
 				cloud_direct_brightness *= 1.3f;
 		} else {
-			cloud_direct_brightness = std::fmin(m_horizon_blend() * 0.15f +
+			cloud_direct_brightness = fmin(m_horizon_blend() * 0.15f +
 				m_time_brightness, 1.0f);
 			// Set the same minimum cloud brightness at night
 			if (time_brightness < 0.5f)
-				cloud_direct_brightness = std::fmax(cloud_direct_brightness,
+				cloud_direct_brightness = fmax(cloud_direct_brightness,
 					time_brightness * 1.3f);
 		}
 	} else {

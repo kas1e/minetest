@@ -41,7 +41,7 @@ float decode_light_f(float x)
 {
 	if (x >= 1.0f) // x is equal to 1.0f half the time
 		return 1.0f;
-	x = std::fmax(x, 0.0f);
+	x = fmax(x, 0.0f);
 	float brightness = ((params.a * x + params.b) * x + params.c) * x;
 	brightness += params.boost * std::exp(-0.5f * sqr((x - params.center) / params.sigma));
 	if (brightness <= 0.0f) // may happen if parameters are insane

@@ -171,7 +171,7 @@ s16 adjustDist(s16 dist, float zoom_fov)
 	if (zoom_fov < 0.001f || zoom_fov > threshold_fov)
 		return dist;
 
-	return std::round(dist * std::cbrt((1.0f - std::cos(threshold_fov)) /
+	return round(dist * cbrt((1.0f - std::cos(threshold_fov)) /
 		(1.0f - std::cos(zoom_fov / 2.0f))));
 }
 

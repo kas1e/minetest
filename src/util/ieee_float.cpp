@@ -63,7 +63,7 @@ f32 u32Tof32Slow(u32 i)
 // in IEEE-754 single-precision format.
 u32 f32Tou32Slow(f32 f)
 {
-	u32 signbit = std::copysign(1.0f, f) == 1.0f ? 0 : 0x80000000UL;
+	u32 signbit = copysign(1.0f, f) == 1.0f ? 0 : 0x80000000UL;
 	if (f == 0.f)
 		return signbit;
 	if (std::isnan(f))

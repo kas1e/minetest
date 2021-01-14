@@ -353,7 +353,7 @@ float MapgenValleys::terrainLevelFromNoise(TerrainNoise *tn)
 
 	// Use the curve of the function 1-exp(-(x/a)^2) to model valleys.
 	// "valley" represents the height of the terrain, from the rivers.
-	float tv = std::fmax(river / tn->valley_profile, 0.0f);
+	float tv = fmax(river / tn->valley_profile, 0.0f);
 	*tn->valley = valley_d * (1.0f - std::exp(-MYSQUARE(tv)));
 
 	// Approximate height of the terrain at this point
@@ -370,14 +370,14 @@ float MapgenValleys::terrainLevelFromNoise(TerrainNoise *tn)
 		// Use the the function -sqrt(1-x^2) which models a circle
 		float tr = river / river_size_factor + 1.0f;
 		float depth = (river_depth_bed *
-			std::sqrt(std::fmax(0.0f, 1.0f - MYSQUARE(tr))));
+			std::sqrt(fmax(0.0f, 1.0f - MYSQUARE(tr))));
 
 		// base - depth : height of the bottom of the river
 		// water_level - 3 : don't make rivers below 3 nodes under the surface.
 		// We use three because that's as low as the swamp biomes go.
 		// There is no logical equivalent to this using rangelim.
 		mount =
-			std::fmin(std::fmax(base - depth, (float)(water_level - 3)), mount);
+			fmin(fmax(base - depth, (float)(water_level - 3)), mount);
 
 		// Slope has no influence on rivers
 		*tn->slope = 0.0f;
@@ -492,12 +492,12 @@ int MapgenValleys::generateTerrain()
 			float heat = ((spflags & MGVALLEYS_ALT_CHILL) &&
 				(surface_y > 0.0f || river_y > 0.0f)) ?
 				t_heat - alt_to_heat *
-					std::fmax(surface_y, river_y) / altitude_chill :
+					fmax(surface_y, river_y) / altitude_chill :
 				t_heat;
 			float delta = m_bgen->humidmap[index_2d] - 50.0f;
 			if (delta < 0.0f) {
 				float t_evap = (heat - 32.0f) / evaporation;
-				river_y += delta * std::fmax(t_evap, 0.08f);
+				river_y += delta * fmax(t_evap, 0.08f);
 			}
 		}
 
@@ -546,17 +546,17 @@ int MapgenValleys::generateTerrain()
 		// Optionally increase humidity around rivers
 		if (spflags & MGVALLEYS_HUMID_RIVERS) {
 			// Ground height ignoring riverbeds
-			float t_alt = std::fmax(noise_rivers->result[index_2d],
+			float t_alt = fmax(noise_rivers->result[index_2d],
 				(float)heightmap[index_2d]);
 			float water_depth = (t_alt - river_y) / humidity_dropoff;
 			m_bgen->humidmap[index_2d] *=
-				1.0f + std::pow(0.5f, std::fmax(water_depth, 1.0f));
+				1.0f + std::pow(0.5f, fmax(water_depth, 1.0f));
 		}
 
 		// Optionally decrease humidity with altitude
 		if (spflags & MGVALLEYS_ALT_DRY) {
 			// Ground height ignoring riverbeds
-			float t_alt = std::fmax(noise_rivers->result[index_2d],
+			float t_alt = fmax(noise_rivers->result[index_2d],
 				(float)heightmap[index_2d]);
 			if (t_alt > 0.0f)
 				m_bgen->humidmap[index_2d] -=
@@ -566,7 +566,7 @@ int MapgenValleys::generateTerrain()
 		// Optionally decrease heat with altitude
 		if (spflags & MGVALLEYS_ALT_CHILL) {
 			// Ground height ignoring riverbeds
-			float t_alt = std::fmax(noise_rivers->result[index_2d],
+			float t_alt = fmax(noise_rivers->result[index_2d],
 				(float)heightmap[index_2d]);
 			if (t_alt > 0.0f)
 				m_bgen->heatmap[index_2d] -=

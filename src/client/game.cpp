@@ -3728,7 +3728,7 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats, f32 dtime,
 						.getInterpolated(video::SColor(255, 0, 0, 0), 0.9);
 				sky->overrideColors(clouds_dark, clouds->getColor());
 				sky->setBodiesVisible(false);
-				runData.fog_range = std::fmin(runData.fog_range * 0.5f, 32.0f * BS);
+				runData.fog_range = fmin(runData.fog_range * 0.5f, 32.0f * BS);
 				// do not draw clouds after all
 				clouds->setVisible(false);
 			}

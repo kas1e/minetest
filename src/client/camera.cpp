@@ -73,7 +73,7 @@ Camera::Camera(MapDrawControl &draw_control, Client *client):
 	m_cache_view_bobbing_amount = g_settings->getFloat("view_bobbing_amount");
 	// 45 degrees is the lowest FOV that doesn't cause the server to treat this
 	// as a zoom FOV and load world beyond the set server limits.
-	m_cache_fov                 = std::fmax(g_settings->getFloat("fov"), 45.0f);
+	m_cache_fov                 = fmax(g_settings->getFloat("fov"), 45.0f);
 	m_arm_inertia               = g_settings->getBool("arm_inertia");
 	m_nametags.clear();
 }
@@ -549,7 +549,7 @@ void Camera::updateViewingRange()
 	f32 viewing_range = g_settings->getFloat("viewing_range");
 	f32 near_plane = g_settings->getFloat("near_plane");
 
-	m_draw_control.wanted_range = std::fmin(adjustDist(viewing_range, getFovMax()), 4000);
+	m_draw_control.wanted_range = fmin(adjustDist(viewing_range, getFovMax()), 4000);
 	m_cameranode->setNearValue(rangelim(near_plane, 0.0f, 0.5f) * BS);
 	if (m_draw_control.range_all) {
 		m_cameranode->setFarValue(100000.0);
