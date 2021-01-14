@@ -1,3 +1,8 @@
+AmigaOS4
+========
+
+[AmigaOS4 Instructions](#amigaos4-instructions)
+
 Minetest
 ========
 
@@ -498,3 +503,76 @@ minor/trivial features considered necessary.
 Since 5.0.0-dev and 0.4.17-dev, the dev notation refers to the next release,
 i.e.: 5.0.0-dev is the development version leading to 5.0.0.
 Prior to that we used `previous_version-dev`.
+
+
+AmigaOS4 instructions
+---------------------
+
+Prepare to build
+----------------
+
+1. You need a cross-compiler. There how making one on Cygwin: https://os4coding.net/blog/kas1e/how-build-amigaos4-cross-compiler-binutils-2232-gcc-830-cygwin. 
+
+2. You should have GCC 8.4.0 not latest than from 10 Jan 2021. The reason for such a requirement because at this time were done some important fixes in c++11 native threading implementation which necessary for a game. So take it from adtools repo: https://github.com/sba1/adtools
+        
+3. Irrlicht Engine SDK: http://os4depot.net/share/development/library/graphics/irrlicht.lha
+
+4. GL4ES SDK: http://os4depot.net/share/development/library/graphics/gl4es_sdk.lha
+
+5. The usual set of libraries from os4depot: sqlite, png, jpg, bzip2, zlib, freetype and curl/rtmp/ssl/crypto libs. All of them you also can get from Odyssey's SDK folder (at least i use those ones)
+
+Configuring and building
+------------------------
+
+Once you have met all the requirements, just clone the repo, and do:
+
+```
+cd minetest
+cd build
+
+cmake \
+-DAMIGAOS4=1 \
+-DRUN_IN_PLACE=TRUE \
+-DCMAKE_SYSTEM_NAME=Generic \
+-DCMAKE_SYSTEM_VERSION=1 \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_C_COMPILER="/usr/local/amiga/bin/ppc-amigaos-gcc" \
+-DCMAKE_CXX_COMPILER="/usr/local/amiga/bin/ppc-amigaos-g++" \
+-DCMAKE_LINKER="/usr/local/amiga/bin/ppc-amigaos-ld" \
+-DCMAKE_AR="/usr/local/amiga/bin/ppc-amigaos-ar" \
+-DCMAKE_RANLIB="/usr/local/amiga/bin/ppc-amigaos-ranlib" \
+-DCMAKE_FIND_ROOT_PATH="/usr/local/amiga/ppc-amigaos/" \
+-DENABLE_SOUND=OFF \
+-DENABLE_LUAJIT=OFF \
+-DENABLE_CURSES=OFF \
+-DENABLE_GETTEXT=OFF \
+-DIRRLICHT_INCLUDE_DIR="/usr/local/amiga/ppc-amigaos/SDK/Local/common/include/irrlicht" \
+-DIRRLICHT_LIBRARY="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/lib/libIrrlicht.a" \
+-DSQLITE3_INCLUDE_DIR="/usr/local/amiga/ppc-amigaos/SDK/Local/common/include/" \
+-DSQLITE3_LIBRARY="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/lib/libsqlite3.a" \
+-DOPENGL_INCLUDE_DIR="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/include/GL/" \
+-DOPENGL_gl_LIBRARY="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/lib/libgl4es.a" \
+-DPNG_PNG_INCLUDE_DIR="/usr/local/amiga/ppc-amigaos/SDK/Local/common/include/" \
+-DPNG_LIBRARY="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/lib/libpng.a" \
+-DJPEG_INCLUDE_DIR="/usr/local/amiga/ppc-amigaos/SDK/Local/common/include/" \
+-DJPEG_LIBRARY="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/lib/libjpeg.a" \
+-DBZIP2_INCLUDE_DIR="/usr/local/amiga/ppc-amigaos/SDK/Local/common/include/" \
+-DBZIP2_LIBRARIES="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/lib/libbz2.a" \
+-DZLIB_INCLUDE_DIR="/usr/local/amiga/ppc-amigaos/SDK/Local/common/include/" \
+-DZLIB_LIBRARY="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/lib/libz.a" \
+-DCURL_INCLUDE_DIR="/usr/local/amiga/ppc-amigaos/SDK/Local/common/include/curl/" \
+-DCURL_LIBRARY="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/lib/libcurl.a" \
+-DFREETYPE_INCLUDE_DIRS="/usr/local/amiga/ppc-amigaos/SDK/Local/common/include/freetype2/" \
+-DFREETYPE_LIBRARY="/usr/local/amiga/ppc-amigaos/SDK/Local/newlib/lib/libfreetype.a" \
+..
+```
+
+Once configuring finished, type ```make -j4```.
+
+Once compilation is done, you will have a working binary in the root of the project inside of the "bin" directory.
+
+Then copy everything to the AmigaOS4 machine, and run the binary from the "bin" directory.
+
+
+
+
