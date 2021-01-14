@@ -30,6 +30,23 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <cctype>
 #include <unordered_map>
 
+#ifdef __amigaos4__
+
+namespace std { 
+    template <typename T> string to_string(const T &n) { 
+        ostringstream strm; 
+        strm << n; 
+        return strm.str(); 
+    } 
+
+    typedef basic_string<wchar_t> wstring; 
+	typedef basic_ostream<wchar_t> wostream;
+	typedef basic_ostringstream<wchar_t> wostringstream;
+	typedef basic_stringstream<wchar_t> wstringstream;
+	
+} 
+#endif
+
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 

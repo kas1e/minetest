@@ -31,6 +31,7 @@
 
 #pragma once
 
+#include "util/string.h"
 #include <irrlicht.h>
 #include <ft2build.h>
 #include <vector>

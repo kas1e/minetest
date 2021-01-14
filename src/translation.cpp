@@ -17,9 +17,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include "util/string.h"
 #include "translation.h"
 #include "log.h"
-#include "util/string.h"
 
 static Translations main_translations;
 Translations *g_translations = &main_translations;

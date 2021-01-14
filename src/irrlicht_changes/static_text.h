@@ -9,6 +9,7 @@
 #include "IrrCompileConfig.h"
 #ifdef _IRR_COMPILE_WITH_GUI_
 
+#include "util/string.h"
 #include "IGUIStaticText.h"
 #include "irrArray.h"
 

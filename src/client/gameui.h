@@ -20,6 +20,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #pragma once
 
+#include "util/string.h"
 #include <IGUIEnvironment.h>
 #include "util/enriched_string.h"
 #include "util/pointedthing.h"
