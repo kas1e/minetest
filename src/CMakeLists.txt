@@ -318,7 +318,9 @@ else()
 		endif(APPLE)
 	endif(BUILD_CLIENT)
 	find_package(ZLIB REQUIRED)
+	if(NOT AMIGAOS4)
 	set(PLATFORM_LIBS -lpthread ${CMAKE_DL_LIBS})
+	endif(NOT AMIGAOS4)
 	if(APPLE)
 		set(PLATFORM_LIBS "-framework CoreFoundation" ${PLATFORM_LIBS})
 	else()
@@ -328,12 +330,12 @@ else()
 		endif(HAVE_LIBRT)
 	endif(APPLE)
 
-	if(NOT HAIKU AND NOT APPLE)
+	if(NOT HAIKU AND NOT APPLE AND NOT AMIGAOS4)
 	# This way Xxf86vm is found on OpenBSD too
 		find_library(XXF86VM_LIBRARY Xxf86vm)
 		mark_as_advanced(XXF86VM_LIBRARY)
 		set(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${XXF86VM_LIBRARY})
-	endif(NOT HAIKU AND NOT APPLE)
+	endif(NOT HAIKU AND NOT APPLE AND NOT AMIGAOS4)
 
 	# Prefer local iconv if installed
 	find_library(ICONV_LIBRARY iconv)
@@ -342,6 +344,11 @@ else()
 		set(PLATFORM_LIBS ${PLATFORM_LIBS} ${ICONV_LIBRARY})
 	endif()
 endif()
+
+if(AMIGAOS4)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -athread=native -fno-math-errno -fno-trapping-math -ffinite-math-only -fno-signed-zeros")
+	set(PLATFORM_LIBS -lIrrlicht -lsdl_gl4es -lgl4es -ljpeg -lbz2 -lpng -lsqlite3 -lfreetype -lcurl -lrtmp -lssl -lcrypto -lgai -lpthread -lz})
+endif(AMIGAOS4)
 
 check_include_files(endian.h HAVE_ENDIAN_H)
 
