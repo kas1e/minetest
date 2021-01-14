@@ -347,7 +347,7 @@ endif()
 
 if(AMIGAOS4)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -athread=native -fno-math-errno -fno-trapping-math -ffinite-math-only -fno-signed-zeros")
-	set(PLATFORM_LIBS -lIrrlicht -lsdl_gl4es -lgl4es -ljpeg -lbz2 -lpng -lsqlite3 -lfreetype -lcurl -lrtmp -lssl -lcrypto -lgai -lpthread -lz})
+	set(PLATFORM_LIBS -lIrrlicht -lsdl_gl4es -lgl4es -ljpeg -lbz2 -lpng -lsqlite3 -lfreetype -lcurl -lrtmp -lssl -lcrypto -lgai -lpthread -lz -lpsem)
 endif(AMIGAOS4)
 
 check_include_files(endian.h HAVE_ENDIAN_H)
