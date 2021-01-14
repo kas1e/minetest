@@ -37,7 +37,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gettext.h"
 
 #if !defined(_WIN32) && !defined(__APPLE__) && !defined(__ANDROID__) && \
-		!defined(SERVER) && !defined(__HAIKU__)
+		!defined(SERVER) && !defined(__HAIKU__) && !defined(__amigaos4__)
 #define XORG_USED
 #endif
 #ifdef XORG_USED
