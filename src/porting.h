@@ -120,6 +120,22 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	#endif
 #endif
 
+
+#ifdef __amigaos4__
+
+/* Macros for converting between `struct timeval' and `struct timespec'.  */
+# define TIMEVAL_TO_TIMESPEC(tv, ts) {                                   \
+        (ts)->tv_sec = (tv)->tv_sec;                                    \
+        (ts)->tv_nsec = (tv)->tv_usec * 1000;                           \
+}
+# define TIMESPEC_TO_TIMEVAL(tv, ts) {                                   \
+        (tv)->tv_sec = (ts)->tv_sec;                                    \
+        (tv)->tv_usec = (ts)->tv_nsec / 1000;                           \
+}
+
+#endif
+
+
 namespace porting
 {
 
