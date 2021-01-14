@@ -21,6 +21,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "translation.h"
 #include "log.h"
 
+#warning ----TODO to deal with translation because of https://github.com/sba1/adtools/issues/92
+
 static Translations main_translations;
 Translations *g_translations = &main_translations;
 
@@ -37,6 +39,7 @@ void Translations::clear()
 const std::wstring &Translations::getTranslation(
 		const std::wstring &textdomain, const std::wstring &s)
 {
+#ifndef __amigaos4__
 	std::wstring key = textdomain + L"|" + s;
 	try {
 		return m_translations.at(key);
@@ -48,10 +51,12 @@ const std::wstring &Translations::getTranslation(
 		m_translations[key] = s;
 		return s;
 	}
+#endif
 }
 
 void Translations::loadTranslation(const std::string &data)
 {
+#ifndef __amigaos4__
 	std::istringstream is(data);
 	std::wstring textdomain;
 	std::string line;
@@ -151,4 +156,5 @@ void Translations::loadTranslation(const std::string &data)
 
 		m_translations[textdomain + L"|" + oword1] = oword2;
 	}
+#endif
 }

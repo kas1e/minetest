@@ -19,6 +19,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #pragma once
 
+#warning ----TODO to deal with translation because of https://github.com/sba1/adtools/issues/92
+
 #include <unordered_map>
 #include <string>
 
@@ -38,5 +40,9 @@ public:
 			const std::wstring &textdomain, const std::wstring &s);
 
 private:
+#ifdef __amigaos4__
+	std::unordered_map<std::string, std::string> m_translations;
+#else
 	std::unordered_map<std::wstring, std::wstring> m_translations;
+#endif
 };
