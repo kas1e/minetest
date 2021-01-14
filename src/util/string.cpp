@@ -39,7 +39,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #endif
 
 #if defined(_ICONV_H_) && (defined(__FreeBSD__) || defined(__NetBSD__) || \
-	defined(__OpenBSD__) || defined(__DragonFly__))
+	defined(__OpenBSD__) || defined(__DragonFly__) || defined(__amigaos4__))
 	#define BSD_ICONV_USED
 #endif
 
@@ -79,6 +79,12 @@ bool convert(const char *to, const char *from, char *outbuf,
 	return true;
 }
 
+#ifdef __amigaos4__
+const char *DEFAULT_ENCODING = "UCS-4";
+#else
+const char *DEFAULT_ENCODING = "WCHAR_T";
+#endif
+
 std::wstring utf8_to_wide(const std::string &input)
 {
 	size_t inbuf_size = input.length() + 1;
@@ -90,7 +96,7 @@ std::wstring utf8_to_wide(const std::string &input)
 	char *outbuf = new char[outbuf_size];
 	memset(outbuf, 0, outbuf_size);
 
-	if (!convert("WCHAR_T", "UTF-8", outbuf, outbuf_size, inbuf, inbuf_size)) {
+	if (!convert(DEFAULT_ENCODING, "UTF-8", outbuf, outbuf_size, inbuf, inbuf_size)) {
 		infostream << "Couldn't convert UTF-8 string 0x" << hex_encode(input)
 			<< " into wstring" << std::endl;
 		delete[] inbuf;
@@ -123,7 +129,7 @@ std::string wide_to_utf8(const std::wstring &input)
 	char *outbuf = new char[outbuf_size];
 	memset(outbuf, 0, outbuf_size);
 
-	if (!convert("UTF-8", "WCHAR_T", outbuf, outbuf_size, inbuf, inbuf_size)) {
+	if (!convert("UTF-8", DEFAULT_ENCODING, outbuf, outbuf_size, inbuf, inbuf_size)) {
 		infostream << "Couldn't convert wstring 0x" << hex_encode(inbuf, inbuf_size)
 			<< " into UTF-8 string" << std::endl;
 		delete[] inbuf;
