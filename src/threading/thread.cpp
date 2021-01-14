@@ -28,6 +28,11 @@ DEALINGS IN THE SOFTWARE.
 #include "log.h"
 #include "porting.h"
 
+#ifdef __amigaos4__
+#include <sched.h>
+#include <pthread.h>
+#endif
+
 // for setName
 #if defined(__linux__)
 	#include <sys/prctl.h>
