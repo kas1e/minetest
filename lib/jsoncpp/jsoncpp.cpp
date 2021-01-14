@@ -242,7 +242,7 @@ static inline void fixNumericLocaleInput(char* begin, char* end) {
 #else
 #define snprintf _snprintf
 #endif
-#elif defined(__ANDROID__) || defined(__QNXNTO__)
+#elif defined(__ANDROID__) || defined(__QNXNTO__) || defined (__amigaos4__)
 #define snprintf snprintf
 #elif __cplusplus >= 201103L
 #if !defined(__MINGW32__) && !defined(__CYGWIN__)
@@ -4198,7 +4198,7 @@ Value& Path::make(Value& root) const {
 #else
 #define snprintf _snprintf
 #endif
-#elif defined(__ANDROID__) || defined(__QNXNTO__)
+#elif defined(__ANDROID__) || defined(__QNXNTO__) || defined (__amigaos4__)
 #define snprintf snprintf
 #elif __cplusplus >= 201103L
 #if !defined(__MINGW32__) && !defined(__CYGWIN__)
