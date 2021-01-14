@@ -777,8 +777,13 @@ bool safeWriteToFile(const std::string &path, const std::string &content)
 	// On POSIX compliant systems rename() is specified to be able to swap the
 	// file in place of the destination file, making this a truly error-proof
 	// transaction.
-	rename_success = rename(tmp_file.c_str(), path.c_str()) == 0;
-#endif
+
+#ifdef __amigaos4__
+	// AmigaDOS's Rename didn't overwrite an existing destination file, so we mimic the Unix way: where rename() also delete an existing file with the same name.
+	// On Linux if rename() success 0 is return, on AmigaDOS 0 return if rename is failed instead. So we change it accordingly
+	IDOS->Delete(path.c_str());
+	rename_success = IDOS->Rename(tmp_file.c_str(), path.c_str()) != 0;
+
 	if (!rename_success) {
 		warningstream << "Failed to write to file: " << path.c_str() << std::endl;
 		// Remove the temporary file because moving it over the target file
@@ -786,13 +791,32 @@ bool safeWriteToFile(const std::string &path, const std::string &content)
 		remove(tmp_file.c_str());
 		return false;
 	}
+#else
+	rename_success = rename(tmp_file.c_str(), path.c_str()) == 0;
+	if (!rename_success) {
+		warningstream << "Failed to write to file: " << path.c_str() << std::endl;
+		// Remove the temporary file because moving it over the target file
+		// failed.
+		remove(tmp_file.c_str());
+		return false;
+	}
+#endif
+
+#endif
 
 	return true;
 }
 
 bool Rename(const std::string &from, const std::string &to)
 {
+#ifdef __amigaos4__
+	// AmigaDOS's Rename didn't overwrite an existing destination file, so we mimic the Unix way: where rename() also delete an existing file with the same name.
+	// On Linux if rename() success 0 is return, on AmigaDOS 0 return if rename is failed instead. So we change it accordingly
+	IDOS->Delete(to.c_str());
+	return IDOS->Rename(from.c_str(), to.c_str()) != 0;
+#else
 	return rename(from.c_str(), to.c_str()) == 0;
+#endif
 }
 
 } // namespace fs
