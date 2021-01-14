@@ -542,6 +542,13 @@ static SRP_Result fill_buff()
 	if (!CryptGenRandom(wctx, sizeof(g_rand_buff), (BYTE *)g_rand_buff)) return SRP_ERR;
 	if (!CryptReleaseContext(wctx, 0)) return SRP_ERR;
 
+#elif __amigaos4__
+	fp = fopen("RANDOM:", "r");
+
+	if (!fp) return SRP_ERR;
+
+	if (fread(g_rand_buff, sizeof(g_rand_buff), 1, fp) != 1) { fclose(fp); return SRP_ERR; }
+	if (fclose(fp)) return SRP_ERR;
 #else
 	fp = fopen("/dev/urandom", "r");
 

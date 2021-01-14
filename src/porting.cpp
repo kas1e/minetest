@@ -641,6 +641,20 @@ bool secure_rand_fill_buf(void *buf, size_t len)
 	return true;
 }
 
+#elif __amigaos4__
+
+bool secure_rand_fill_buf(void *buf, size_t len)
+{
+	FILE *fp = fopen("RANDOM:", "r");
+	if (!fp)
+		return false;
+
+	bool success = fread(buf, len, 1, fp) == 1;
+
+	fclose(fp);
+	return success;
+}
+
 #else
 
 bool secure_rand_fill_buf(void *buf, size_t len)
