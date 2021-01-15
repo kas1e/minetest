@@ -79,7 +79,12 @@ void TestServerModManager::runTests(IGameDef *gamedef)
 	if (saved_env_mt_subgame_path)
 		setenv("MINETEST_SUBGAME_PATH", saved_env_mt_subgame_path, 1);
 	else
+		#ifdef __amigaos4__
+		#warning On OS4 we dont have unsetenv().
+		{}
+		#else
 		unsetenv("MINETEST_SUBGAME_PATH");
+		#endif
 #endif
 }
 
