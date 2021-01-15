@@ -36,6 +36,30 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "irrlichttypes.h"
 #include "networkexceptions.h"
 
+
+#ifdef __amigaos4__
+
+// dummy ipv6 defines/structures
+
+#define AF_INET6			10
+#define INET6_ADDRSTRLEN	46
+#define IPPROTO_IPV6		41
+#define IPV6_V6ONLY			26
+
+struct in6_addr {
+        unsigned char s6_addr[16];   /* IPv6 address */
+};
+
+struct sockaddr_in6 {
+	unsigned char   sin6_family;   /* AF_INET6 */
+	unsigned short  sin6_port;     /* port number */
+	unsigned long   sin6_flowinfo; /* IPv6 flow information */
+	struct in6_addr sin6_addr;     /* IPv6 address */
+	unsigned long   sin6_scope_id; /* Scope ID (new in 2.4) */
+};
+
+#endif
+
 class IPv6AddressBytes
 {
 public:
