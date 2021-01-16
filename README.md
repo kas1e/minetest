@@ -514,12 +514,16 @@ Prepare to build
 1. You need a cross-compiler. There how making one on Cygwin: https://os4coding.net/blog/kas1e/how-build-amigaos4-cross-compiler-binutils-2232-gcc-830-cygwin. 
 
 2. You should have GCC 8.4.0 not latest than from 10 Jan 2021. The reason for such a requirement because at this time were done some important fixes in c++11 native threading implementation which necessary for a game. So take it from adtools repo: https://github.com/sba1/adtools
-        
-3. Irrlicht Engine SDK: http://os4depot.net/share/development/library/graphics/irrlicht.lha
 
-4. GL4ES SDK: http://os4depot.net/share/development/library/graphics/gl4es_sdk.lha
+3. You need the very latest SDK_53.30.lha + updates from FinalEdition Update2 which contains new newlib, pthread, etc SDK files.
 
-5. The usual set of libraries from os4depot: sqlite, png, jpg, bzip2, zlib, freetype and curl/rtmp/ssl/crypto libs. All of them you also can get from Odyssey's SDK folder (at least i use those ones)
+4. Irrlicht Engine SDK: http://os4depot.net/share/development/library/graphics/irrlicht.lha
+
+5. GL4ES SDK: http://os4depot.net/share/development/library/graphics/gl4es_sdk.lha
+
+6. AmigaOS4 POSIX semaphore implementation by Salas00 (Fredrik Wikström): http://os4depot.net/share/development/library/misc/libpsem.lha
+
+7. The usual set of libraries from os4depot: sqlite, png, jpg, bzip2, zlib, freetype and curl/rtmp/ssl/crypto libs. All of them you also can get from Odyssey's SDK folder (at least i use those ones)
 
 Configuring and building
 ------------------------
